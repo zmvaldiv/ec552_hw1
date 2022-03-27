@@ -1,0 +1,8 @@
+﻿name,type,input_1,input_2,output,output_off,output_on
+A,AND,a,b,Aout,0,0
+B,AND,c,d,Bout,0,0
+C,AND,Aout,Bout,Cout,0,0
+D,OR,e,f,Dout,0,0
+E,OR,g,Cout,Eout,0,0
+F,NOT,Eout,,Fout,0,0
+G,AND,Dout,Fout,Gout,0,0

@@ -1,4 +1,4 @@
-function [outputON,outputOFF,score] = NOT_gate(input,ymin,ymax,K,n)
+function [outputON,outputOFF,score] = NOT_gate(input,ymin,ymax,K,n,oper_inputs)
 % OR gate,
 % input = [LOW, HIGH];
 % truth table : 1 0

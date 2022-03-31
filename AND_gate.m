@@ -1,4 +1,4 @@
-function [outputON,outputOFF,score,gate_index] = AND_gate(input1,input2,ymin,ymax,K,n)
+function [outputON,outputOFF,score,gate_index] = AND_gate(input1,input2,ymin,ymax,K,n,oper_inputs)
 % AND gate,
 % input = [LOW, HIGH];
 % truth table : 0 0 0 1

@@ -111,9 +111,10 @@ end
 outputOFF_max = max(outputOFF_all');
 score_all = log10(outputON_all./outputOFF_max);
 bestgate_index = find(score_all == max(max(score_all)));
-score = score_all(bestgate_index);
-outputON = outputON_all(bestgate_index);
-outputOFF = outputOFF_all(bestgate_index);
+bestgate_index = bestgate_index(1);
+score = score_all(bestgate_index(1));
+outputON = outputON_all(bestgate_index(1));
+outputOFF = outputOFF_all(bestgate_index(1));
 
 disp(' ')
 disp('->The output Y is found for each X.')

@@ -1,4 +1,4 @@
-function [outputON,outputOFF,score,gate_index] = AND_gate(input1,input2,ymin,ymax,K,n,oper_inputs,gatenum)
+function [outputON,outputOFF,score,bestgate_index] = AND_gate(input1,input2,ymin,ymax,K,n,oper_inputs,gatenum)
 % AND gate,
 % input = [LOW, HIGH];
 % truth table : 0 0 0 1
@@ -94,10 +94,10 @@ for i=1:length(ymin)
     score_all(i,j) = log10(outputON_all(i,j)/outputOFF_all(i,j));
 end
 end
-gate_index = find(score_all == max(max(score_all)));
-score = score_all(gate_index);
-outputON = outputON_all(gate_index);
-outputOFF = outputOFF_all(gate_index);
+bestgate_index = find(score_all == max(max(score_all)));
+score = score_all(bestgate_index);
+outputON = outputON_all(bestgate_index);
+outputOFF = outputOFF_all(bestgate_index);
 
 disp('The output Y is found for each X. The score is found for each AND gate.'); 
 disp('The score for each gate is found. The highest scoring gate is found.');

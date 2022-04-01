@@ -1,4 +1,4 @@
-function [outputON,outputOFF,score] = NOT_gate(input,ymin,ymax,K,n,oper_inputs,gatenum)
+function [outputON,outputOFF,score,bestgate_index] = NOT_gate(input,ymin,ymax,K,n,oper_inputs,gatenum)
 % OR gate,
 % input = [LOW, HIGH];
 % truth table : 1 0
@@ -86,10 +86,10 @@ for i=1:length(ymin)
     outputOFF_all(i) = ymin(i,2)+(ymax(i,2)-ymin(i,2))/(1.0+(x(2)/K(i,2))^n(i,2));
     score_all(i) = log10(outputON_all(i)/outputOFF_all(i));
 end
-gate_index = find(score_all == max(score_all));
-score = score_all(gate_index);
-outputON = outputON_all(gate_index);
-outputOFF = outputOFF_all(gate_index);
+bestgate_index = find(score_all == max(score_all));
+score = score_all(bestgate_index);
+outputON = outputON_all(bestgate_index);
+outputOFF = outputOFF_all(bestgate_index);
 
 disp('The output Y is found for each X. The score is found for each NOT gate.'); 
 disp('The score for each gate is found. The highest scoring gate is found.');

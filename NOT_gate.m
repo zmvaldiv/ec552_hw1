@@ -1,4 +1,4 @@
-function [outputON,outputOFF,score] = NOT_gate(input,ymin,ymax,K,n,oper_inputs)
+function [outputON,outputOFF,score] = NOT_gate(input,ymin,ymax,K,n,oper_inputs,gatenum)
 % OR gate,
 % input = [LOW, HIGH];
 % truth table : 1 0
@@ -6,36 +6,92 @@ function [outputON,outputOFF,score] = NOT_gate(input,ymin,ymax,K,n,oper_inputs)
 % all outputs correspond to the gate with the MAX score 
 x = input;
 %%%%%% do operations here %%%%%%%
-if oper_inputs.stretch == 1
-n = n*x;
+%stretch operator, ymax/min copied in each colum to fit dimensions
+if oper_inputs.stretch(gatenum) == 1
+    ymax = [ymax' ymax'];
+    ymin = [ymin' ymin'];
+
+    disp('Ymax and Ymin are copied in each column to test each X value');
+
+    ymax = ymax.*x;
+    ymin = ymin./x;
+
+    disp('Stretch operation was perfomed:');
+    disp('Ymax is multiplied by each X value');
+    disp('Ymin is divided by each X value');
 end
 
-if oper_inputs.increase == 1
-    n = n*x;
-end
-if oper_inputs.strong_prom == 1
-    ymax = ymax*x;
-    ymin = ymin*x;
+%increase operator, n changes dimensions when multiplied
+if oper_inputs.increase(gatenum) == 1
+    n = [n' n'];
+    n = n.*x;
+    disp('The slope was increased:');
+    disp('n is multiplied by each X value');    
 end
 
-if oper_inputs.weak_prom == 1
-    ymax = ymax/x;
-    ymin = ymin/x;
+%decrease operator, n changes dimensions when multiplied
+if oper_inputs.decrease(gatenum) == 1
+    n = [n' n'];
+    n = n./x;
+    disp('The slope was decreased:');
+    disp('n is divided by each X value');
 end
-if oper_inputs.strong_rbs == 1
-    K = K/x;
+
+%strong promotor operator, ymax/min copied in each colum to fit dimensions
+if oper_inputs.strong_prom(gatenum) == 1
+    ymax = [ymax' ymax'];
+    ymin = [ymin' ymin'];
+    
+    disp('Ymax and Ymin are copied in each column to test each X value');
+
+    ymax = ymax.*x;
+    ymin = ymin.*x;
+    
+    disp('Stronger promotor operation was perfomed:');
+    disp('Ymax is multiplied by each X value');
+    disp('Ymin is multiplied by each X value');
 end
-if oper_inputs.weak_rbs == 1
-    K = K*x;
+
+%weak promotor operator, ymax/min copied in each colum to fit dimensions
+if oper_inputs.weak_prom(gatenum) == 1
+    ymax = [ymax' ymax'];
+    ymin = [ymin' ymin'];
+
+    disp('Ymax and Ymin are copied in each column to test each X value');
+
+    ymax = ymax./x;
+    ymin = ymin./x;
+    disp('Weaker promotor operation was perfomed:');
+    disp('Ymax is divided by each X value');
+    disp('Ymin is divided by each X value');
+end
+%strong rbs operator, K changes dimensions when multiplied
+if oper_inputs.strong_rbs(gatenum) == 1
+    K = [K' K'];
+    K = K./x;
+    disp('Strong RBS operation was perfomed:');
+    disp('K is divided by each X value');
+end
+
+%weak rbs operator, K changes dimensions when multiplied
+if oper_inputs.weak_rbs(gatenum) == 1
+    K = [K' K'];
+    K = K.*x;
+    disp('Weak RBS operation was perfomed:');
+    disp('K is multiplied by each X value');
 end
 %%%%%%%%%%
 for i=1:length(ymin)
-    outputON_all(i) = ymin(i)+(ymax(i)-ymin(i))/(1.0+(x(1)/K(i))^n(i));
-    outputOFF_all(i) = ymin(i)+(ymax(i)-ymin(i))/(1.0+(input(2)/K(i))^n(i));
+    outputON_all(i) = ymin(i,1)+(ymax(i,1)-ymin(i,1))/(1.0+(x(1)/K(i,1))^n(i,1));
+    outputOFF_all(i) = ymin(i,2)+(ymax(i,2)-ymin(i,2))/(1.0+(x(2)/K(i,2))^n(i,2));
     score_all(i) = log10(outputON_all(i)/outputOFF_all(i));
 end
 gate_index = find(score_all == max(score_all));
 score = score_all(gate_index);
 outputON = outputON_all(gate_index);
 outputOFF = outputOFF_all(gate_index);
+
+disp('The output Y is found for each X. The score is found for each NOT gate.'); 
+disp('The score for each gate is found. The highest scoring gate is found.');
+disp('The highest scoring gate, the outputs, and the score are recorded.');
 end 

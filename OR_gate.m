@@ -1,4 +1,4 @@
-function [outputON,outputOFF,score] = OR_gate(input1,input2,ymin,ymax,K,n,oper_inputs)
+function [outputON,outputOFF,score,gate_index] = OR_gate(input1,input2,ymin,ymax,K,n,oper_inputs,gatenum)
 % OR gate,
 % input = [LOW, HIGH];
 % truth table : 1 0 0 0
@@ -7,48 +7,106 @@ function [outputON,outputOFF,score] = OR_gate(input1,input2,ymin,ymax,K,n,oper_i
 
 x = [input1(1)+input2(1), input1(1)+input2(2), input1(2)+input2(1), input1(2)+input2(2)];
 %%%%%% do operations here %%%%%%%
-if oper_inputs.stretch == 1
-n = n*x;
+%stretch operator, ymax/min copied in each colum to fit dimensions
+if oper_inputs.stretch(gatenum) == 1
+    ymax = [ymax' ymax' ymax' ymax'];
+    ymin = [ymin' ymin' ymin' ymin'];
+
+    disp('Ymax and Ymin are copied in each column to test each X value');
+
+    ymax = ymax.*x;
+    ymin = ymin./x;
+
+    disp('Stretch operation was perfomed:');
+    disp('Ymax is multiplied by each X value');
+    disp('Ymin is divided by each X value');
 end
 
-if oper_inputs.increase == 1
+%increase operator, n changes dimensions when multiplied
+if oper_inputs.increase(gatenum) == 1
     n = n*x;
-end
-if oper_inputs.strong_prom == 1
-    ymax = ymax*x;
-    ymin = ymin*x;
+    disp('The slope was increased:');
+    disp('n is multiplied by each X value');    
 end
 
-if oper_inputs.weak_prom == 1
-    ymax = ymax/x;
-    ymin = ymin/x;
+%decrease operator, n changes dimensions when multiplied
+if oper_inputs.decrease(gatenum) == 1
+    n = n/x;
+    disp('The slope was decreased:');
+    disp('n is divided by each X value');
 end
-if oper_inputs.strong_rbs == 1
+
+%strong promotor operator, ymax/min copied in each colum to fit dimensions
+if oper_inputs.strong_prom(gatenum) == 1
+    ymax = [ymax' ymax' ymax' ymax'];
+    ymin = [ymin' ymin' ymin' ymin'];
+    
+    disp('Ymax and Ymin are copied in each column to test each X value');
+
+    ymax = ymax.*x;
+    ymin = ymin.*x;
+    
+    disp('Stronger promotor operation was perfomed:');
+    disp('Ymax is multiplied by each X value');
+    disp('Ymin is multiplied by each X value');
+end
+
+%weak promotor operator, ymax/min copied in each colum to fit dimensions
+if oper_inputs.weak_prom(gatenum) == 1
+    ymax = [ymax' ymax' ymax' ymax'];
+    ymin = [ymin' ymin' ymin' ymin'];
+
+    disp('Ymax and Ymin are copied in each column to test each X value');
+
+    ymax = ymax./x;
+    ymin = ymin./x;
+    disp('Weaker promotor operation was perfomed:');
+    disp('Ymax is divided by each X value');
+    disp('Ymin is divided by each X value');
+end
+%strong rbs operator, K changes dimensions when multiplied
+if oper_inputs.strong_rbs(gatenum) == 1
     K = K/x;
+    disp('Strong RBS operation was perfomed:');
+    disp('K is divided by each X value');
 end
-if oper_inputs.weak_rbs == 1
+
+%weak rbs operator, K changes dimensions when multiplied
+if oper_inputs.weak_rbs(gatenum) == 1
     K = K*x;
+    disp('Weak RBS operation was perfomed:');
+    disp('K is multiplied by each X value');
 end
 %%%%%%%%%%
 
-for j = 1:length(x)
-    if size(ymin)~=size(K)
+if size(ymin)~=size(K)
         K=K';
         K = [K K K K];
-    end
-    if size(ymin)~=size(n)
-        n = n';
-        n = [n n n n];
-    end
-for i=1:length(ymin)
-    y = ymin(i,j)+(ymax(i,j)-ymin(i,j))./(1.0+(x./K(i,j)).^n(i,j));
-    outputON_all(i,j) = y(:,1);
-    outputOFF_all(i,j) = max(max(y(:,2:4)));
-    score_all(i,j) = log10(outputON_all(i,j)/outputOFF_all(i,j));
+        disp('K was copied in each column to test each X value');
 end
+
+if size(ymin)~=size(n)
+    n = n';
+    n = [n n n n];
+    disp('n was copied in each column to test each X value');
 end
+
+% for loop that sees which gate is the best
+for j = 1:length(x)
+    for i=1:length(ymin)
+        y = ymin(i,j)+(ymax(i,j)-ymin(i,j))./(1.0+(x(j)./K(i,j)).^n(i,j));
+        outputON_all(i,j) = y(:,1);
+        outputOFF_all(i,j) = max(max(y(:,2:4)));
+        score_all(i,j) = log10(outputON_all(i,j)/outputOFF_all(i,j));
+    end
+end
+
 gate_index = find(score_all == max(max(score_all)));
 score = score_all(gate_index);
 outputON = outputON_all(gate_index);
 outputOFF = outputOFF_all(gate_index);
+
+disp('The output Y is found for each X. The score is found for each OR gate.'); 
+disp('The score for each gate is found. The highest scoring gate is found.');
+disp('The highest scoring gate, the outputs, and the score are recorded.'); 
 end 

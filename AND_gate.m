@@ -6,11 +6,14 @@ function [outputON,outputOFF,score,bestgate_index] = AND_gate(input1,input2,ymin
 % all outputs correspond to the gate with the MAX score 
 
 x = [input1(1)+input2(1), input1(1)+input2(2), input1(2)+input2(1), input1(2)+input2(2)];
+
 %%%%%% do operations here %%%%%%%
 %stretch operator, ymax/min copied in each colum to fit dimensions
 if oper_inputs.stretch(gatenum) == 1
-    ymax = [ymax' ymax' ymax' ymax'];
-    ymin = [ymin' ymin' ymin' ymin'];
+    if ~isequal(size(ymax,2),size(x,2))
+        ymax = [ymax' ymax' ymax' ymax'];
+        ymin = [ymin' ymin' ymin' ymin'];
+    end
 
     disp('Ymax and Ymin are copied in each column to test each X value');
 
@@ -38,8 +41,10 @@ end
 
 %strong promotor operator, ymax/min copied in each colum to fit dimensions
 if oper_inputs.strong_prom(gatenum) == 1
-    ymax = [ymax' ymax' ymax' ymax'];
-    ymin = [ymin' ymin' ymin' ymin'];
+    if ~isequal(size(ymax,2),size(x,2))
+        ymax = [ymax' ymax' ymax' ymax'];
+        ymin = [ymin' ymin' ymin' ymin'];
+    end
     
     disp('Ymax and Ymin are copied in each column to test each X value');
 
@@ -53,8 +58,10 @@ end
 
 %weak promotor operator, ymax/min copied in each colum to fit dimensions
 if oper_inputs.weak_prom(gatenum) == 1
-    ymax = [ymax' ymax' ymax' ymax'];
-    ymin = [ymin' ymin' ymin' ymin'];
+    if ~isequal(size(ymax,2),size(x,2))
+        ymax = [ymax' ymax' ymax' ymax'];
+        ymin = [ymin' ymin' ymin' ymin'];
+    end
 
     disp('Ymax and Ymin are copied in each column to test each X value');
 

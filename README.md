@@ -10,7 +10,7 @@ The main livescript file EC552HW1.mlx and 3 gate function files (AND_gate.m, OR_
 When getting started, load the files on the MATLAB directory, change filenames in the "Import Files" section as directed and run the script. 
 The output file is automatically named as "myoutput.txt" and placed in the run directory. 
 
-*When running multiple runs: *
+*When running multiple runs:*
 
 We suggest clearing the variable workspace to not have any errors with the variable names. 
 If multiple output results need to be saved, rename the result file in the code or remove the file "myoutput.txt" from the directory to save it elsewhere.

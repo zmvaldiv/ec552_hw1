@@ -4,6 +4,16 @@
 ###### What it can do
 This MATLAB livescript tool allows for basic optimization of a user-defined circuit by modifying the response function of individual gates using various operations that user can decide for each gate. The tool runs through the given circuit automatically and returns an output text file that contains information of the score, rudimentary circuit diagram, gates chosen with operations run on it, and how many times each operation was used. 
 
+###### To Run
+The main livescript file EC552HW1.mlx and 3 gate function files (AND_gate.m, OR_gate.m, NOT_gate.m) should be in same directory to run the script. The user-defined files (described below) should be in the same directory as well. 
+
+When getting started, load the files on the MATLAB directory, change filenames in the "Import Files" section as directed and run the script. 
+The output file is automatically named as "myoutput.txt" and placed in the run directory. 
+
+*When running multiple runs*
+We suggest clearing the variable workspace to not have any errors with the variable names. 
+If multiple output results need to be saved, rename the result file in the code or remove the file "myoutput.txt" from the directory to save it elsewhere.
+
 ###### Files to prepare
 *IMPORTANT: ALL FILES SHOULD HAVE SAME NECESSARY COLUMN NAMES AS THE EXAMPLE FILES IN THIS REPOSITORY*
 More information is given in the mlx file. The files can be unused columns but the necessary column names must be included to run the program properly.
